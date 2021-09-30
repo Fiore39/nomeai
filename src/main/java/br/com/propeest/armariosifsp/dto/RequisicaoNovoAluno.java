@@ -13,26 +13,7 @@ public class RequisicaoNovoAluno {
     private String nome;
     @NotBlank
     @NotNull
-    private String rg;
-    @NotBlank
-    @NotNull
-    @CPF
-    private String cpf;
-    @NotBlank
-    @NotNull
-    private String registro;
-    @NotBlank
-    @NotNull
-    private String ano;
-    @NotBlank
-    @NotNull
-    private String turma;
-    @NotBlank
-    @NotNull
     private String email;
-    @NotBlank
-    @NotNull
-    private String telefone;
     @NotBlank
     @NotNull
     private String senha;
@@ -45,60 +26,12 @@ public class RequisicaoNovoAluno {
         this.nome = nome;
     }
 
-    public String getRg() {
-        return rg;
-    }
-
-    public void setRg(String rg) {
-        this.rg = rg;
-    }
-
-    public String getCpf() {
-        return cpf;
-    }
-
-    public void setCpf(String cpf) {
-        this.cpf = cpf;
-    }
-
-    public String getRegistro() {
-        return registro;
-    }
-
-    public void setRegistro(String registro) {
-        this.registro = registro;
-    }
-
-    public String getAno() {
-        return ano;
-    }
-
-    public void setAno(String ano) {
-        this.ano = ano;
-    }
-
-    public String getTurma() {
-        return turma;
-    }
-
-    public void setTurma(String turma) {
-        this.turma = turma;
-    }
-
     public String getEmail() {
         return email;
     }
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public String getTelefone() {
-        return telefone;
-    }
-
-    public void setTelefone(String telefone) {
-        this.telefone = telefone;
     }
 
     public String getSenha() {
@@ -112,13 +45,7 @@ public class RequisicaoNovoAluno {
     public Aluno toAluno() {
         Aluno aluno = new Aluno();
         aluno.setNome(this.nome);
-        aluno.setRg(this.rg);
-        aluno.setCpf(this.cpf);
-        aluno.setRegistro(this.registro);
-        aluno.setAno(this.ano);
-        aluno.setTurma(this.turma);
         aluno.setEmail(this.email);
-        aluno.setTelefone(this.telefone);
         aluno.setSenha(this.senha);
 
         return aluno;
@@ -128,13 +55,7 @@ public class RequisicaoNovoAluno {
     public String toString() {
         return "RequisicaoNovoAluno{" +
                 "nome='" + nome + '\'' +
-                ", rg='" + rg + '\'' +
-                ", cpf='" + cpf + '\'' +
-                ", registro='" + registro + '\'' +
-                ", ano='" + ano + '\'' +
-                ", turma='" + turma + '\'' +
                 ", email='" + email + '\'' +
-                ", telefone='" + telefone + '\'' +
                 '}';
     }
 }

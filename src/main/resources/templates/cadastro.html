@@ -1,5 +1,5 @@
 <!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring-4-4.dtd">
-<html lang="pt-br" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="pt-br">
 <head>
     <meta charset="utf-8">
     <meta name="author" content="Equipe Propeest">
@@ -34,10 +34,10 @@
                 document.getElementById("msgemail").innerHTML="<font color='green'>Após confirmar o cadastro, verifique a caixa de entrada do e-mail inserido para ativar sua conta.</font>";
             }
             else{
-                document.getElementById("msgemail").innerHTML="<font color='red'>E-mail inválido </font>";
-                alert("E-mail invalido");
+            document.getElementById("msgemail").innerHTML="<font color='red'>E-mail inválido </font>";
+            alert("E-mail invalido");
             }
-        }
+            }
     </script>
 </head>
 
@@ -50,25 +50,31 @@
 
     <form name="formcadastro" method="post" th:object="${requisicaoNovoAluno}" action="/alunos">
         <label>Nome completo</label>
-        <input type="text" name="nome" th:field="*{nome}">
+        <input type="text" name="nome" th:field="*{nome}" required>
         <div th:errors="*{nome}"></div>
         <hr>
         <br><br>
         <label>E-mail institucional</label>
-        <input type="email" name="email" th:field="*{email}" onblur="validacaoEmail(formcadastro.email) ">
+        <input type="email" name="email" th:field="*{email}" onblur="validacaoEmail(formcadastro.email)" required>
         <div th:errors="*{email}"></div>
         <div id="msgemail"></div>
         <hr>
         <br><br>
         <label>Insira uma senha</label>
-        <input type="password" name="senha" th:field="*{senha}">
+        <input type="password" name="senha" th:field="*{senha}" required>
         <div th:errors="*{senha}"></div>
         <hr>
         <br><br>
         <label>Confirme a senha</label>
-        <input type="password" name="senha2">
+        <input type="password" name="senha2" required>
         <hr>
         <br><br>
+
+        <form action="/action_page.php" onchange="location=this.value" id="termos">
+            <input type="checkbox" id="" name="termos" value="">
+            <a href="./PDF/TERMOS E CONDIÇÕES DE USO E POLÍTICA DE PRIVACIDADE.pdf" download="TERMOS E CONDIÇÕES DE USO E POLÍTICA DE PRIVACIDADE"> Eu li e concordo com os Termos e Condições de Uso e Política de Privacidade</a>
+            <br>
+        </form>
 
         <section id="botoes">
             <button class="botao" type="submit" onclick="return validar()">Concluir</button>

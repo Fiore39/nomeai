@@ -8,14 +8,39 @@ import javax.persistence.Id;
 public class Armario {
 
     private String id;
-    private Long idProprietário;
+    private Aluno proprietario;
+    private Contrato contrato;
     private String bloco;
-    private String local;
     private String status;
     private String entidadeEstudantil;
 
     public Armario() {
 
+    }
+
+    public Armario(String id, Bloco bloco, String entidadeEstudantil) {
+        this.id = id;
+        this.bloco = bloco.getNome();
+        this.entidadeEstudantil = entidadeEstudantil;
+        this.status = "LIVRE";
+    }
+
+    public void reservar() {
+        this.status = "RESERVADO";
+    }
+
+    public void alugar(Contrato contrato) {
+        this.contrato = contrato;
+        this.proprietario = contrato.getAluno();
+        this.status = "ALUGADO";
+    }
+
+    public void liberar() {
+        if (this.status.equals("ALUGADO")) {
+            this.contrato = null;
+            this.proprietario = null;
+        }
+        this.status = "LIVRE";
     }
 
     public String getId() {
@@ -26,12 +51,20 @@ public class Armario {
         this.id = id;
     }
 
-    public Long getIdProprietário() {
-        return idProprietário;
+    public Aluno getProprietario() {
+        return proprietario;
     }
 
-    public void setIdProprietário(Long idProprietário) {
-        this.idProprietário = idProprietário;
+    public void setProprietario(Aluno proprietario) {
+        this.proprietario = proprietario;
+    }
+
+    public Contrato getContrato() {
+        return contrato;
+    }
+
+    public void setContrato(Contrato contrato) {
+        this.contrato = contrato;
     }
 
     public String getBloco() {
@@ -40,14 +73,6 @@ public class Armario {
 
     public void setBloco(String bloco) {
         this.bloco = bloco;
-    }
-
-    public String getLocal() {
-        return local;
-    }
-
-    public void setLocal(String local) {
-        this.local = local;
     }
 
     public String getStatus() {

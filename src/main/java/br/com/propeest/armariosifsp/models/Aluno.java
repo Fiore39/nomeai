@@ -1,9 +1,12 @@
 package br.com.propeest.armariosifsp.models;
 
+import org.checkerframework.checker.units.qual.A;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import java.util.ArrayList;
 
 @Entity
 public class Aluno {
@@ -12,17 +15,20 @@ public class Aluno {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String nome;
-    private String rg;
-    private String cpf;
-    private String registro;
-    private String ano;
-    private String turma;
     private String email;
-    private String telefone;
     private String senha;
+    private ArrayList<Contrato> contratos = new ArrayList<>();
 
     public Aluno() {
 
+    }
+
+    public void alugarArmario(Contrato contrato) {
+        contratos.add(contrato);
+    }
+
+    public void encerrarContrato(Contrato contrato) {
+        contratos.remove(contrato);
     }
 
     public Long getId() {
@@ -41,60 +47,12 @@ public class Aluno {
         this.nome = nome;
     }
 
-    public String getRg() {
-        return rg;
-    }
-
-    public void setRg(String rg) {
-        this.rg = rg;
-    }
-
-    public String getCpf() {
-        return cpf;
-    }
-
-    public void setCpf(String cpf) {
-        this.cpf = cpf;
-    }
-
-    public String getRegistro() {
-        return registro;
-    }
-
-    public void setRegistro(String registro) {
-        this.registro = registro;
-    }
-
-    public String getAno() {
-        return ano;
-    }
-
-    public void setAno(String ano) {
-        this.ano = ano;
-    }
-
-    public String getTurma() {
-        return turma;
-    }
-
-    public void setTurma(String turma) {
-        this.turma = turma;
-    }
-
     public String getEmail() {
         return email;
     }
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public String getTelefone() {
-        return telefone;
-    }
-
-    public void setTelefone(String telefone) {
-        this.telefone = telefone;
     }
 
     public String getSenha() {
@@ -105,18 +63,13 @@ public class Aluno {
         this.senha = senha;
     }
 
+
     @Override
     public String toString() {
         return "Aluno{" +
                 "id=" + id +
                 ", nome='" + nome + '\'' +
-                ", rg='" + rg + '\'' +
-                ", cpf='" + cpf + '\'' +
-                ", registro='" + registro + '\'' +
-                ", ano='" + ano + '\'' +
-                ", turma='" + turma + '\'' +
                 ", email='" + email + '\'' +
-                ", telefone='" + telefone + '\'' +
                 ", senha='" + senha + '\'' +
                 '}';
     }

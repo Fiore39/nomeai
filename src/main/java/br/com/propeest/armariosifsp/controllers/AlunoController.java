@@ -25,7 +25,7 @@ public class AlunoController {
     @Autowired
     private ServiceAluno serviceAluno;
 
-    @GetMapping("/alunos")
+    @GetMapping("/aluno/")
     public ModelAndView index() {
         List<Aluno> alunos = this.alunoRepository.findAll();
         ModelAndView mv = new ModelAndView("alunos/index");
@@ -34,58 +34,36 @@ public class AlunoController {
         return mv;
     }
 
-    @GetMapping("/login")
-    public ModelAndView login() {
-        ModelAndView mv = new ModelAndView();
-        mv.addObject("aluno", new Aluno());
-        mv.setViewName("alunos/login");
-        return mv;
-    }
-
-    @GetMapping("/cadastro")
-    public ModelAndView cadastrar() {
-        ModelAndView mv = new ModelAndView();
-        mv.addObject("requisicaoNovoAluno", new RequisicaoNovoAluno());
-        mv.setViewName("alunos/cadastro");
-        return mv;
-    }
-
-    @GetMapping("/ajuda")
+    @GetMapping("/aluno/ajuda")
     public ModelAndView ajuda() {
         ModelAndView mv = new ModelAndView();
         mv.setViewName("alunos/ajuda");
         return mv;
     }
 
-    @GetMapping("/contrato")
+    @GetMapping("/aluno/contrato")
     public ModelAndView contrato() {
         ModelAndView mv = new ModelAndView();
         mv.setViewName("alunos/contrato");
         return mv;
     }
 
-    @GetMapping("/contrato2")
-    public ModelAndView contrato2() {
-        ModelAndView mv = new ModelAndView();
-        mv.setViewName("alunos/contrato2");
-        return mv;
-    }
 
-    @GetMapping("/blocosGremio")
+    @GetMapping("/aluno/blocosGremio")
     public ModelAndView blocosGremio() {
         ModelAndView mv = new ModelAndView();
         mv.setViewName("alunos/blocosGremio");
         return mv;
     }
 
-    @GetMapping("/armariosDisponiveis")
+    @GetMapping("/aluno/armariosDisponiveis")
     public ModelAndView armariosDisponiveis() {
         ModelAndView mv = new ModelAndView();
         mv.setViewName("alunos/armariosDisponiveis");
         return mv;
     }
 
-    @GetMapping("/armario")
+    @GetMapping("/aluno/armario")
     public ModelAndView armario() {
         ModelAndView mv = new ModelAndView();
         mv.setViewName("alunos/armario");

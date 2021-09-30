@@ -1,100 +1,79 @@
 body{
-  margin: 0;
-  padding: 0;
-  background: #013549;
-  font-family: "Arial", "sans-serif";
-  display: flex;
-  width: 100%;
-  height: 100%;
+    margin: 0;
+    padding: 0;
+    background: #013549;
+    font-family: "Arial", "sans-serif";
+    width: 100%;
+    height: 100%;
 }
 
-header {
-  background: #fff;
-  width: 12%;
-  height: 100%;
-}
-
-.menu {
-  width: 100%;
-  height: 100%;
-  margin: auto;
-  overflow: hidden;
-}
-
-/*posição-botões*/
-header nav {
-  float: right;
-  line-height: 30px;
-}
-
-/*estrutura-botões*/
-header nav a{
-  text-decoration: none;
-  font-size: 20px;
-  display: inline-block;
-  text-align: center;
-  line-height: 30px;
-  color: black;
+h1{
+    font-weight: lighter;
+    color: white;
+    font-size: 50px;
+    display: block;
+    text-align: center;
+    position: relative;
 
 }
 
-header nav a1{
-  text-decoration: none;
-  font-size: 20px;
-  background: lightseagreen;
-  display: inline-block;
-  text-align: center;
-  line-height: 30px;
-
+h2{
+    font-weight: lighter;
+    color: white;
+    font-size: 30px;
+    display: block;
+    text-align: center;
+    position: relative;
 }
 
-header nav a:hover{
-  background: lightseagreen;
-  transition: 1s;
+h3{
+    text-align: center;
+    font-weight: lighter;
+    color: black;
+    font-size: 20px;
 }
 
-nav img{
-  width: 40%;
-  height: 40%;
-  margin-block-start: 15%;
+
+.cadastro{
+    font-family:Verdana;
+    background-color: white;
+    padding: 80px;
+    border-radius: 20px;
+    position: relative;
+    margin-left: 25%;
+    margin-right: 25%;
+    top: 8px;
 }
 
-.principal{
-  text-align: center;
-  position: relative;
-  margin-left: 20%;
-  margin-top: 5%;
+.cadastro input:focus{
+    background-color: rgb(223, 247, 245);
 }
 
-h5{
-  font-weight: lighter;
-  color: white;
-  font-size: 50px;
+input, select{
+    padding: 15px;
+    font-size: 15px;
+    display: block;
+    border: none;
+    width: 95%;
 }
 
-h4{
-  font-weight: lighter;
-  color: white;
-  font-size: 30px;
-}
 
 button{
-
-    background-color: #013549;
     border: think;
-    border-color: lightseagreen;
+    border-color: #013549;
     border-radius: 10px;
-    color: white;
+    color: #013549;
     cursor: pointer;
-    height: 50px;/*altura*/
-    width: 50%; /*largura*/
+    height: 50px;
+    width: 50%;
     font-size: 16px;
     font-family: Verdana;
+    float: right;
 
 }
 
 button:hover{
-    background-color: lightseagreen;
+    background-color: #013549;
     color:white;
     transition: 1s;
 }

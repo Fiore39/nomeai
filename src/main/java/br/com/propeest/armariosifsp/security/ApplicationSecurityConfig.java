@@ -29,6 +29,7 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                     .antMatchers("/", "/index", "/login", "/cadastro", "/css/*", "/IMG/*", "/js/*")
                         .permitAll()
+                    .antMatchers("/aluno/**").hasRole(ApplicationUserRole.ALUNO.name())
                 .anyRequest()
                     .authenticated()
                 .and()
@@ -41,13 +42,13 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
         UserDetails primeiroUsuario = User.builder()
                 .username("aaa")
                 .password(passwordEncoder.encode("aaa"))
-                .roles("ALUNO")
+                .roles(ApplicationUserRole.ALUNO.name())
                 .build();
 
         UserDetails admin = User.builder()
                 .username("admin")
                 .password(passwordEncoder.encode("admin"))
-                .roles("ADMIN")
+                .roles(ApplicationUserRole.ADMIN.name())
                 .build();
 
         return new InMemoryUserDetailsManager(
