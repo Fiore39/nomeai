@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 @Entity
 public class Aluno {
-
+	//Teste
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
