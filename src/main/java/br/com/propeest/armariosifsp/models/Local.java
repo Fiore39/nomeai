@@ -6,7 +6,6 @@ import java.util.ArrayList;
 @Entity
 public class Local {
 
-    //teste
     private String nome;
     private ArrayList<Bloco> blocos = new ArrayList<>();
 
