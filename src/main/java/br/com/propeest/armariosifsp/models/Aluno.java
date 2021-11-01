@@ -6,7 +6,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+
 import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Aluno {
@@ -17,7 +20,8 @@ public class Aluno {
     private String nome;
     private String email;
     private String senha;
-    private ArrayList<Contrato> contratos = new ArrayList<>();
+    @OneToMany(targetEntity=Contrato.class, mappedBy="aluno")
+    private List<Contrato> contratos = new ArrayList<>();
 
     public Aluno() {
 

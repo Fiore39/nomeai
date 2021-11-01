@@ -1,10 +1,14 @@
 package br.com.propeest.armariosifsp.models;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import java.util.Date;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
+
+import java.time.OffsetDateTime;
 
 @Entity
 public class Contrato {
@@ -12,11 +16,15 @@ public class Contrato {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    
+    @OneToOne
     private Armario armario;
+    @ManyToOne
     private Aluno aluno;
+    @OneToOne(targetEntity=Aluno.class, cascade=CascadeType.ALL)
     private Aluno admin;
-    private Date inicioDoContrato;
-    private Date fimDoContrato;
+	private OffsetDateTime dataAluguel;
+    private OffsetDateTime dataVencimento;
     private String rgAluno;
     private String cpfAluno;
     private String registroAluno;
@@ -24,13 +32,13 @@ public class Contrato {
     private String turmaAluno;
     private String telefoneAluno;
 
-    public Contrato(Long id, Armario armario, Aluno aluno, Aluno admin, Date inicioDoContrato, Date fimDoContrato, String rgAluno, String cpfAluno, String registroAluno, String anoAluno, String turmaAluno, String telefoneAluno) {
+    public Contrato(Long id, Armario armario, Aluno aluno, Aluno admin, OffsetDateTime dataAluguel, OffsetDateTime dataVencimento, String rgAluno, String cpfAluno, String registroAluno, String anoAluno, String turmaAluno, String telefoneAluno) {
         this.id = id;
         this.armario = armario;
         this.aluno = aluno;
         this.admin = admin;
-        this.inicioDoContrato = inicioDoContrato;
-        this.fimDoContrato = fimDoContrato;
+        this.dataAluguel = dataAluguel;
+        this.dataVencimento = dataVencimento;
         this.rgAluno = rgAluno;
         this.cpfAluno = cpfAluno;
         this.registroAluno = registroAluno;
@@ -39,99 +47,101 @@ public class Contrato {
         this.telefoneAluno = telefoneAluno;
     }
 
-    public Long getId() {
-        return id;
-    }
+	public Long getId() {
+		return id;
+	}
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+	public void setId(Long id) {
+		this.id = id;
+	}
 
-    public Armario getArmario() {
-        return armario;
-    }
+	public Armario getArmario() {
+		return armario;
+	}
 
-    public void setArmario(Armario armario) {
-        this.armario = armario;
-    }
+	public void setArmario(Armario armario) {
+		this.armario = armario;
+	}
 
-    public Aluno getAluno() {
-        return aluno;
-    }
+	public Aluno getAluno() {
+		return aluno;
+	}
 
-    public void setAluno(Aluno aluno) {
-        this.aluno = aluno;
-    }
+	public void setAluno(Aluno aluno) {
+		this.aluno = aluno;
+	}
 
-    public Aluno getAdmin() {
-        return admin;
-    }
+	public Aluno getAdmin() {
+		return admin;
+	}
 
-    public void setAdmin(Aluno admin) {
-        this.admin = admin;
-    }
+	public void setAdmin(Aluno admin) {
+		this.admin = admin;
+	}
 
-    public Date getInicioDoContrato() {
-        return inicioDoContrato;
-    }
+	public OffsetDateTime getDataAluguel() {
+		return dataAluguel;
+	}
 
-    public void setInicioDoContrato(Date inicioDoContrato) {
-        this.inicioDoContrato = inicioDoContrato;
-    }
+	public void setDataAluguel(OffsetDateTime dataAluguel) {
+		this.dataAluguel = dataAluguel;
+	}
 
-    public Date getFimDoContrato() {
-        return fimDoContrato;
-    }
+	public OffsetDateTime getDataVencimento() {
+		return dataVencimento;
+	}
 
-    public void setFimDoContrato(Date fimDoContrato) {
-        this.fimDoContrato = fimDoContrato;
-    }
+	public void setDataVencimento(OffsetDateTime dataVencimento) {
+		this.dataVencimento = dataVencimento;
+	}
 
-    public String getRgAluno() {
-        return rgAluno;
-    }
+	public String getRgAluno() {
+		return rgAluno;
+	}
 
-    public void setRgAluno(String rgAluno) {
-        this.rgAluno = rgAluno;
-    }
+	public void setRgAluno(String rgAluno) {
+		this.rgAluno = rgAluno;
+	}
 
-    public String getCpfAluno() {
-        return cpfAluno;
-    }
+	public String getCpfAluno() {
+		return cpfAluno;
+	}
 
-    public void setCpfAluno(String cpfAluno) {
-        this.cpfAluno = cpfAluno;
-    }
+	public void setCpfAluno(String cpfAluno) {
+		this.cpfAluno = cpfAluno;
+	}
 
-    public String getRegistroAluno() {
-        return registroAluno;
-    }
+	public String getRegistroAluno() {
+		return registroAluno;
+	}
 
-    public void setRegistroAluno(String registroAluno) {
-        this.registroAluno = registroAluno;
-    }
+	public void setRegistroAluno(String registroAluno) {
+		this.registroAluno = registroAluno;
+	}
 
-    public String getAnoAluno() {
-        return anoAluno;
-    }
+	public String getAnoAluno() {
+		return anoAluno;
+	}
 
-    public void setAnoAluno(String anoAluno) {
-        this.anoAluno = anoAluno;
-    }
+	public void setAnoAluno(String anoAluno) {
+		this.anoAluno = anoAluno;
+	}
 
-    public String getTurmaAluno() {
-        return turmaAluno;
-    }
+	public String getTurmaAluno() {
+		return turmaAluno;
+	}
 
-    public void setTurmaAluno(String turmaAluno) {
-        this.turmaAluno = turmaAluno;
-    }
+	public void setTurmaAluno(String turmaAluno) {
+		this.turmaAluno = turmaAluno;
+	}
 
-    public String getTelefoneAluno() {
-        return telefoneAluno;
-    }
+	public String getTelefoneAluno() {
+		return telefoneAluno;
+	}
 
-    public void setTelefoneAluno(String telefoneAluno) {
-        this.telefoneAluno = telefoneAluno;
-    }
+	public void setTelefoneAluno(String telefoneAluno) {
+		this.telefoneAluno = telefoneAluno;
+	}
+
+    
 }

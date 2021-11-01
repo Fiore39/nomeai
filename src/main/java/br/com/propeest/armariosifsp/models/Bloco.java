@@ -1,14 +1,32 @@
 package br.com.propeest.armariosifsp.models;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.validation.constraints.NotBlank;
+
 import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Bloco {
 
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
     private String nome;
+    
+    @NotBlank
     private String entidadeEstudantil;
-    private ArrayList<Armario> armarios = new ArrayList<>();
+    
+    @OneToMany(mappedBy = "bloco", cascade=CascadeType.ALL)
+    private List<Armario> armarios = new ArrayList<>();
+    @ManyToOne
+    private Local local;
 
     public Bloco(String nome, String entidadeEstudantil) {
         this.nome = nome;
@@ -23,11 +41,43 @@ public class Bloco {
         this.armarios.add(armario);
     }
 
-    public String getNome() {
-        return nome;
-    }
+	public Long getId() {
+		return id;
+	}
 
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getNome() {
+		return nome;
+	}
+
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
+
+	public String getEntidadeEstudantil() {
+		return entidadeEstudantil;
+	}
+
+	public void setEntidadeEstudantil(String entidadeEstudantil) {
+		this.entidadeEstudantil = entidadeEstudantil;
+	}
+
+	public List<Armario> getArmarios() {
+		return armarios;
+	}
+
+	public void setArmarios(List<Armario> armarios) {
+		this.armarios = armarios;
+	}
+
+	public Local getLocal() {
+		return local;
+	}
+
+	public void setLocal(Local local) {
+		this.local = local;
+	}
 }
