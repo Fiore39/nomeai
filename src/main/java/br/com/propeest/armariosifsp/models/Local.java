@@ -17,13 +17,13 @@ public class Local {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
     private String nome;
-    @OneToMany(cascade=CascadeType.ALL)
+    
+    @OneToMany(mappedBy = "local", cascade=CascadeType.ALL)
     private List<Bloco> blocos = new ArrayList<>();
 
     public Local(String nome) {
         this.nome = nome;
     }
-
     public void adicionarBloco(Bloco bloco) {
         this.blocos.add(bloco);
     }
@@ -31,7 +31,6 @@ public class Local {
     public String getNome() {
         return nome;
     }
-
     public void setNome(String nome) {
         this.nome = nome;
     }

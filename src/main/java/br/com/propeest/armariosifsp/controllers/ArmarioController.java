@@ -11,6 +11,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.propeest.armariosifsp.InputModels.ArmarioOutput;
+import br.com.propeest.armariosifsp.InputModels.ContratoInput;
+import br.com.propeest.armariosifsp.assembler.ArmarioAssembler;
 import br.com.propeest.armariosifsp.models.Armario;
 import br.com.propeest.armariosifsp.models.Bloco;
 import br.com.propeest.armariosifsp.models.Contrato;
@@ -23,17 +26,20 @@ public class ArmarioController {
 
 	private ServiceArmario serviceArmario;
 	private ServiceBloco serviceBloco;
+	private ArmarioAssembler armarioAssembler;
 	
-	public ArmarioController(ServiceArmario serviceArmario, ServiceBloco serviceBloco) {
+	public ArmarioController(ServiceArmario serviceArmario, ServiceBloco serviceBloco, ArmarioAssembler armarioAssembler) {
 		super();
 		this.serviceArmario = serviceArmario;
 		this.serviceBloco = serviceBloco;
+		this.armarioAssembler = armarioAssembler;
 	}
 
 	@GetMapping
-	public List<Armario> listar(@PathVariable Long idbloco){
+	public List<ArmarioOutput> listar(@PathVariable Long idbloco){
 		Bloco bloco = serviceBloco.buscar(idbloco);
-		return bloco.getArmarios();
+		
+		return armarioAssembler.toCollectionModel(bloco.getArmarios());
 	}
 	
 	@PutMapping
@@ -41,9 +47,9 @@ public class ArmarioController {
 		return serviceArmario.atualizar(armarios);
 	}
 	
-	@PutMapping("{idarmario}/aluguel")
+	@PutMapping("/{idarmario}/aluguel")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public Contrato reservar(@PathVariable Long idarmario, @RequestBody Contrato contrato){
-		return serviceArmario.reservar(idarmario, contrato);
+	public Contrato reservar(@PathVariable Long idarmario, @RequestBody ContratoInput contratoInput){
+		return serviceArmario.reservar(idarmario, contratoInput);
 	}
 }

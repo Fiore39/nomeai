@@ -6,6 +6,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 
@@ -20,12 +21,13 @@ public class Armario {
     private Contrato contrato;
     
     @ManyToOne
+    @JoinColumn(name = "bloco_id", nullable = false)
     private Bloco bloco;
+    
     private String nomeBloco;
     
     @Enumerated(EnumType.STRING)
     private StatusArmario status;
-    private String entidadeEstudantil;
 
     public Armario() {
 
@@ -34,7 +36,7 @@ public class Armario {
     public Armario(String nome, Bloco bloco, String entidadeEstudantil) {
         this.nome = nome;
         this.nomeBloco = bloco.getNome();
-        this.entidadeEstudantil = entidadeEstudantil;
+        this.bloco.setEntidadeEstudantil(entidadeEstudantil);
         this.status = StatusArmario.LIVRE;
     }
     
@@ -106,14 +108,5 @@ public class Armario {
 	public void setStatus(StatusArmario status) {
 		this.status = status;
 	}
-
-	public String getEntidadeEstudantil() {
-		return entidadeEstudantil;
-	}
-
-	public void setEntidadeEstudantil(String entidadeEstudantil) {
-		this.entidadeEstudantil = entidadeEstudantil;
-	}
-
     
 }

@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 
@@ -20,6 +21,7 @@ public class Contrato {
     @OneToOne
     private Armario armario;
     @ManyToOne
+    @JoinColumn(name = "aluno_id", nullable = true)
     private Aluno aluno;
     @OneToOne(targetEntity=Aluno.class, cascade=CascadeType.ALL)
     private Aluno admin;
@@ -32,7 +34,11 @@ public class Contrato {
     private String turmaAluno;
     private String telefoneAluno;
 
-    public Contrato(Long id, Armario armario, Aluno aluno, Aluno admin, OffsetDateTime dataAluguel, OffsetDateTime dataVencimento, String rgAluno, String cpfAluno, String registroAluno, String anoAluno, String turmaAluno, String telefoneAluno) {
+    public Contrato() {
+		super();
+	}
+
+	public Contrato(Long id, Armario armario, Aluno aluno, Aluno admin, OffsetDateTime dataAluguel, OffsetDateTime dataVencimento, String rgAluno, String cpfAluno, String registroAluno, String anoAluno, String turmaAluno, String telefoneAluno) {
         this.id = id;
         this.armario = armario;
         this.aluno = aluno;

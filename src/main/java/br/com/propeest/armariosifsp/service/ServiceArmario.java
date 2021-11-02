@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import br.com.propeest.armariosifsp.InputModels.ContratoInput;
 import br.com.propeest.armariosifsp.exceptions.NegocioException;
 import br.com.propeest.armariosifsp.models.Armario;
 import br.com.propeest.armariosifsp.models.Bloco;
@@ -26,14 +27,20 @@ public class ServiceArmario {
 	}
 
 	@Transactional
-	public Armario salvar(Bloco bloco) {
+	public Armario salvar(Bloco bloco, int i) {
 		Armario armario = new Armario(bloco);
+		armario.setNome(bloco.getNome() + i);
 		return armarioRepository.save(armario);
 	}
 	
 	public Armario buscar(Long idarmario) {
 		return armarioRepository.findById(idarmario)
 				.orElseThrow(() -> new NegocioException("Armário não encontrado!"));
+	}
+	
+	public List<Armario> getAllArmariosByBloco(Bloco bloco){
+		//List<Armario> armarios = new ArrayList<>();
+		return armarioRepository.findByBloco(bloco);
 	}
 	
 	@Transactional
@@ -53,10 +60,10 @@ public class ServiceArmario {
 	}
 	
 	@Transactional
-	public Contrato reservar(Long idarmario, Contrato contrato) {
+	public Contrato reservar(Long idarmario, ContratoInput contratoInput) {
 		Armario armario = this.buscar(idarmario);
 		armario.setStatus(StatusArmario.RESERVADO);
 		armario = armarioRepository.save(armario);
-		return serviceContrato.gerar(armario, contrato);
+		return serviceContrato.gerar(armario, contratoInput);
 	}
 }

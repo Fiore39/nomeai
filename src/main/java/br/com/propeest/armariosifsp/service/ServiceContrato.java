@@ -4,6 +4,8 @@ import java.time.OffsetDateTime;
 
 import org.springframework.stereotype.Service;
 
+import br.com.propeest.armariosifsp.InputModels.ContratoInput;
+import br.com.propeest.armariosifsp.assembler.ContratoAssembler;
 import br.com.propeest.armariosifsp.models.Armario;
 import br.com.propeest.armariosifsp.models.Contrato;
 import br.com.propeest.armariosifsp.repositories.ContratoRepository;
@@ -12,13 +14,17 @@ import br.com.propeest.armariosifsp.repositories.ContratoRepository;
 public class ServiceContrato {
 
 	private ContratoRepository contratoRepository;
+	private ContratoAssembler contratoAssembler;
 
-	public ServiceContrato(ContratoRepository contratoRepository) {
+	public ServiceContrato(ContratoRepository contratoRepository, ContratoAssembler contratoAssembler) {
 		super();
 		this.contratoRepository = contratoRepository;
+		this.contratoAssembler = contratoAssembler;
 	}
 	
-	public Contrato gerar(Armario armario, Contrato contrato) {
+	public Contrato gerar(Armario armario, ContratoInput contratoInput) {
+		Contrato contrato = contratoAssembler.toEntity(contratoInput);
+		
 		contrato.setArmario(armario);
 		contrato.setDataAluguel(OffsetDateTime.now());
 		contrato.setDataVencimento(OffsetDateTime.now().plusDays(3));

@@ -1,7 +1,5 @@
 package br.com.propeest.armariosifsp.models;
 
-import org.checkerframework.checker.units.qual.A;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;

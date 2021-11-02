@@ -2,6 +2,8 @@ package br.com.propeest.armariosifsp.controllers;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.propeest.armariosifsp.InputModels.BlocoInput;
 import br.com.propeest.armariosifsp.models.Armario;
 import br.com.propeest.armariosifsp.models.Bloco;
 import br.com.propeest.armariosifsp.repositories.BlocoRepository;
@@ -38,7 +41,7 @@ public class BlocoController {
 	
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public List<Armario> criar(@RequestBody Bloco bloco){
+	public List<Armario> criar(@Valid @RequestBody BlocoInput bloco){
 		return serviceBloco.adicionar(bloco);
 	}
 	

@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotBlank;
@@ -25,10 +26,16 @@ public class Bloco {
     
     @OneToMany(mappedBy = "bloco", cascade=CascadeType.ALL)
     private List<Armario> armarios = new ArrayList<>();
+    
     @ManyToOne
+    @JoinColumn(name = "local_id", nullable = true)
     private Local local;
 
-    public Bloco(String nome, String entidadeEstudantil) {
+    public Bloco() {
+		super();
+	}
+
+	public Bloco(String nome, String entidadeEstudantil) {
         this.nome = nome;
         this.entidadeEstudantil = entidadeEstudantil;
         for (int i = 0; i < 16; i++) {
