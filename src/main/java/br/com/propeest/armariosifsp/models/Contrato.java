@@ -18,13 +18,16 @@ public class Contrato {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
-    @OneToOne
+    @ManyToOne
     private Armario armario;
+    
     @ManyToOne
     @JoinColumn(name = "aluno_id", nullable = true)
     private Aluno aluno;
+    
     @OneToOne(targetEntity=Aluno.class, cascade=CascadeType.ALL)
     private Aluno admin;
+    
 	private OffsetDateTime dataAluguel;
     private OffsetDateTime dataVencimento;
     private String rgAluno;

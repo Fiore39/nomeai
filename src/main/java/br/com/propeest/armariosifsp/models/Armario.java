@@ -17,27 +17,19 @@ public class Armario {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 	private String nome;
-	@OneToOne
+	
+	@OneToMany
     private Contrato contrato;
     
     @ManyToOne
     @JoinColumn(name = "bloco_id", nullable = false)
     private Bloco bloco;
     
-    private String nomeBloco;
-    
     @Enumerated(EnumType.STRING)
     private StatusArmario status;
 
     public Armario() {
 
-    }
-
-    public Armario(String nome, Bloco bloco, String entidadeEstudantil) {
-        this.nome = nome;
-        this.nomeBloco = bloco.getNome();
-        this.bloco.setEntidadeEstudantil(entidadeEstudantil);
-        this.status = StatusArmario.LIVRE;
     }
     
     public Armario(Bloco bloco) {
@@ -55,7 +47,7 @@ public class Armario {
     }
 
     public void liberar() {
-        if (this.status.equals(StatusArmario.ALUGADO)) {
+        if (this.status.equals(StatusArmario.ALUGADO) || this.status.equals(StatusArmario.RESERVADO)) {
             this.contrato = null;
         }
         this.status = StatusArmario.LIVRE;
@@ -91,14 +83,6 @@ public class Armario {
 
 	public void setBloco(Bloco bloco) {
 		this.bloco = bloco;
-	}
-
-	public String getNomeBloco() {
-		return nomeBloco;
-	}
-
-	public void setNomeBloco(String nomeBloco) {
-		this.nomeBloco = nomeBloco;
 	}
 
 	public StatusArmario getStatus() {
