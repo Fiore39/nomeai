@@ -66,4 +66,16 @@ public class ServiceArmario {
 		armario = armarioRepository.save(armario);
 		return serviceContrato.gerar(armario, contratoInput);
 	}
+	/*
+    public void alugar(Contrato contrato) {
+        this.contrato = contrato;
+        this.status = StatusArmario.ALUGADO;
+    }
+
+    public void liberar() {
+        if (this.status.equals(StatusArmario.ALUGADO) || this.status.equals(StatusArmario.RESERVADO)) {
+            this.contrato = null;
+        }
+        this.status = StatusArmario.LIVRE;
+    }*/
 }

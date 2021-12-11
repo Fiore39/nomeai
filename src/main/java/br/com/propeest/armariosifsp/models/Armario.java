@@ -1,5 +1,8 @@
 package br.com.propeest.armariosifsp.models;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -8,7 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
+import javax.persistence.OneToMany;
 
 @Entity
 public class Armario {
@@ -18,8 +21,8 @@ public class Armario {
     private Long id;
 	private String nome;
 	
-	@OneToMany
-    private Contrato contrato;
+	@OneToMany(mappedBy = "armario")
+    private List<Contrato> contratos = new ArrayList<>();
     
     @ManyToOne
     @JoinColumn(name = "bloco_id", nullable = false)
@@ -41,18 +44,6 @@ public class Armario {
         this.status = StatusArmario.RESERVADO;
     }
 
-    public void alugar(Contrato contrato) {
-        this.contrato = contrato;
-        this.status = StatusArmario.ALUGADO;
-    }
-
-    public void liberar() {
-        if (this.status.equals(StatusArmario.ALUGADO) || this.status.equals(StatusArmario.RESERVADO)) {
-            this.contrato = null;
-        }
-        this.status = StatusArmario.LIVRE;
-    }
-
 	public Long getId() {
 		return id;
 	}
@@ -69,12 +60,12 @@ public class Armario {
 		this.nome = nome;
 	}
 
-	public Contrato getContrato() {
-		return contrato;
+	public List<Contrato> getContrato() {
+		return contratos;
 	}
 
-	public void setContrato(Contrato contrato) {
-		this.contrato = contrato;
+	public void setContrato(List<Contrato> contratos) {
+		this.contratos = contratos;
 	}
 
 	public Bloco getBloco() {

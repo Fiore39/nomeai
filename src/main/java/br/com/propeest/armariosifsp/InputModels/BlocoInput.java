@@ -34,6 +34,4 @@ public class BlocoInput {
 		this.local = local;
 	}
 	
-	
-	
 }

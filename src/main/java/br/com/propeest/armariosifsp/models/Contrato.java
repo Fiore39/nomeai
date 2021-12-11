@@ -1,6 +1,7 @@
 package br.com.propeest.armariosifsp.models;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -19,6 +20,7 @@ public class Contrato {
     private Long id;
     
     @ManyToOne
+    @JoinColumn(name = "armario_id", nullable = false)
     private Armario armario;
     
     @ManyToOne
@@ -30,31 +32,14 @@ public class Contrato {
     
 	private OffsetDateTime dataAluguel;
     private OffsetDateTime dataVencimento;
-    private String rgAluno;
-    private String cpfAluno;
-    private String registroAluno;
-    private String anoAluno;
-    private String turmaAluno;
-    private String telefoneAluno;
+    private Boolean ativo;
+    
+    @Embedded
+    private AlunoContrato alunoContrato;
 
     public Contrato() {
 		super();
 	}
-
-	public Contrato(Long id, Armario armario, Aluno aluno, Aluno admin, OffsetDateTime dataAluguel, OffsetDateTime dataVencimento, String rgAluno, String cpfAluno, String registroAluno, String anoAluno, String turmaAluno, String telefoneAluno) {
-        this.id = id;
-        this.armario = armario;
-        this.aluno = aluno;
-        this.admin = admin;
-        this.dataAluguel = dataAluguel;
-        this.dataVencimento = dataVencimento;
-        this.rgAluno = rgAluno;
-        this.cpfAluno = cpfAluno;
-        this.registroAluno = registroAluno;
-        this.anoAluno = anoAluno;
-        this.turmaAluno = turmaAluno;
-        this.telefoneAluno = telefoneAluno;
-    }
 
 	public Long getId() {
 		return id;
@@ -104,53 +89,20 @@ public class Contrato {
 		this.dataVencimento = dataVencimento;
 	}
 
-	public String getRgAluno() {
-		return rgAluno;
+	public Boolean getAtivo() {
+		return ativo;
 	}
 
-	public void setRgAluno(String rgAluno) {
-		this.rgAluno = rgAluno;
+	public void setAtivo(Boolean ativo) {
+		this.ativo = ativo;
 	}
 
-	public String getCpfAluno() {
-		return cpfAluno;
+	public AlunoContrato getAlunoContrato() {
+		return alunoContrato;
 	}
 
-	public void setCpfAluno(String cpfAluno) {
-		this.cpfAluno = cpfAluno;
+	public void setAlunoContrato(AlunoContrato alunoContrato) {
+		this.alunoContrato = alunoContrato;
 	}
-
-	public String getRegistroAluno() {
-		return registroAluno;
-	}
-
-	public void setRegistroAluno(String registroAluno) {
-		this.registroAluno = registroAluno;
-	}
-
-	public String getAnoAluno() {
-		return anoAluno;
-	}
-
-	public void setAnoAluno(String anoAluno) {
-		this.anoAluno = anoAluno;
-	}
-
-	public String getTurmaAluno() {
-		return turmaAluno;
-	}
-
-	public void setTurmaAluno(String turmaAluno) {
-		this.turmaAluno = turmaAluno;
-	}
-
-	public String getTelefoneAluno() {
-		return telefoneAluno;
-	}
-
-	public void setTelefoneAluno(String telefoneAluno) {
-		this.telefoneAluno = telefoneAluno;
-	}
-
     
 }

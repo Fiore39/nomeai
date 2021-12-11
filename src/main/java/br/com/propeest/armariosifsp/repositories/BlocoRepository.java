@@ -6,9 +6,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import br.com.propeest.armariosifsp.models.Bloco;
+import br.com.propeest.armariosifsp.models.EntidadeEstudantil;
 
 @Repository
 public interface BlocoRepository extends JpaRepository<Bloco, Long>{
 
-	List<Bloco> findByEntidadeEstudantil(String entidadeEstudantil);
+	List<Bloco> findByEntidadeEstudantil(EntidadeEstudantil entidadeEstudantil);
 }
