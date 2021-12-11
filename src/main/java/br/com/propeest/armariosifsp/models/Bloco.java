@@ -2,6 +2,8 @@ package br.com.propeest.armariosifsp.models;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -19,10 +21,13 @@ public class Bloco {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	
+	@NotBlank
     private String nome;
     
     @NotBlank
-    private String entidadeEstudantil;
+    @Enumerated(EnumType.STRING)
+    private EntidadeEstudantil entidadeEstudantil;
     
     @OneToMany(mappedBy = "bloco", cascade=CascadeType.ALL)
     private List<Armario> armarios = new ArrayList<>();
@@ -35,16 +40,14 @@ public class Bloco {
 		super();
 	}
 
-	public Bloco(String nome, String entidadeEstudantil) {
-        this.nome = nome;
-        this.entidadeEstudantil = entidadeEstudantil;
-        for (int i = 0; i < 16; i++) {
-            Armario armario = new Armario(nome + i, this, entidadeEstudantil);
-            adicionarArmario(armario);
-        }
-    }
+    public Bloco(@NotBlank String nome, @NotBlank EntidadeEstudantil entidadeEstudantil, Local local) {
+		super();
+		this.nome = nome;
+		this.entidadeEstudantil = entidadeEstudantil;
+		this.local = local;
+	}
 
-    public void adicionarArmario(Armario armario) {
+	public void adicionarArmario(Armario armario) {
         this.armarios.add(armario);
     }
 
@@ -64,11 +67,11 @@ public class Bloco {
 		this.nome = nome;
 	}
 
-	public String getEntidadeEstudantil() {
+	public EntidadeEstudantil getEntidadeEstudantil() {
 		return entidadeEstudantil;
 	}
 
-	public void setEntidadeEstudantil(String entidadeEstudantil) {
+	public void setEntidadeEstudantil(EntidadeEstudantil entidadeEstudantil) {
 		this.entidadeEstudantil = entidadeEstudantil;
 	}
 
