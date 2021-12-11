@@ -31,4 +31,14 @@ public class ServiceContrato {
 		return contratoRepository.save(contrato);
 	}
 	
+	/*
+	public void alugarArmario(Contrato contrato) {
+        contratos.add(contrato);
+    }
+
+    public void encerrarContrato(Contrato contrato) {
+        contratos.remove(contrato);
+    }
+	*/
+	
 }
