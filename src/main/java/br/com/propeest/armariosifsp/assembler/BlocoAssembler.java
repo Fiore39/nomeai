@@ -1,9 +1,13 @@
 package br.com.propeest.armariosifsp.assembler;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
 import br.com.propeest.armariosifsp.InputModels.BlocoInput;
+import br.com.propeest.armariosifsp.InputModels.BlocoOutput;
 import br.com.propeest.armariosifsp.models.Bloco;
 import br.com.propeest.armariosifsp.models.EntidadeEstudantil;
 
@@ -27,6 +31,16 @@ public class BlocoAssembler {
 		bloco.setEntidadeEstudantil(EntidadeEstudantil.fromString(blocoInput.getEntidadeEstudantil()));
 		
 		return bloco;
+	}
+	
+	public BlocoOutput toModel(Bloco bloco) {
+		return modelMapper.map(bloco, BlocoOutput.class);
+	}
+	
+	public List<BlocoOutput> toCollectionModel(List<Bloco> blocos){
+		return blocos.stream()
+				.map(this::toModel)
+				.collect(Collectors.toList());
 	}
 	
 }

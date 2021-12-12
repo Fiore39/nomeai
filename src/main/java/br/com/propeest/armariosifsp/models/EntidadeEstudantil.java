@@ -22,7 +22,8 @@ public enum EntidadeEstudantil {
 	
 	public static EntidadeEstudantil fromString(String nomeEntidadeEstudantil) {
         for (EntidadeEstudantil entidadeEstudantil : EntidadeEstudantil.values()) {
-            if (entidadeEstudantil.valor.equalsIgnoreCase(nomeEntidadeEstudantil)) {
+        	//Possiveis substituições comentadas abaixo
+            if (entidadeEstudantil.name().equalsIgnoreCase(nomeEntidadeEstudantil.toUpperCase())) {
                 return entidadeEstudantil;
             }
         }
@@ -30,3 +31,13 @@ public enum EntidadeEstudantil {
     }
 	
 }
+/*
+if (entidadeEstudantil.valor.equalsIgnoreCase(nomeEntidadeEstudantil)) {
+    return entidadeEstudantil;
+}
+if (EntidadeEstudantil.valueOf(blocoInput.getEntidadeEstudantil().toUpperCase()) == EntidadeEstudantil.DA) {
+	bloco.setEntidadeEstudantil(EntidadeEstudantil.DA);
+} else
+if (EntidadeEstudantil.valueOf(blocoInput.getEntidadeEstudantil().toUpperCase()) == EntidadeEstudantil.GREMIO) {
+	bloco.setEntidadeEstudantil(EntidadeEstudantil.GREMIO);
+}*/

@@ -25,7 +25,6 @@ public class Bloco {
 	@NotBlank
     private String nome;
     
-    @NotBlank
     @Enumerated(EnumType.STRING)
     private EntidadeEstudantil entidadeEstudantil;
     

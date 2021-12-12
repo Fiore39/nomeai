@@ -15,10 +15,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.propeest.armariosifsp.InputModels.ArmarioOutput;
 import br.com.propeest.armariosifsp.InputModels.BlocoInput;
-import br.com.propeest.armariosifsp.models.Armario;
-import br.com.propeest.armariosifsp.models.Bloco;
-import br.com.propeest.armariosifsp.models.EntidadeEstudantil;
+import br.com.propeest.armariosifsp.InputModels.BlocoOutput;
 import br.com.propeest.armariosifsp.repositories.BlocoRepository;
 import br.com.propeest.armariosifsp.service.ServiceBloco;
 
@@ -36,13 +35,13 @@ public class BlocoController {
 	}
 
 	@GetMapping("/{entidadeEstudantil}")
-	public List<Bloco> listar(@PathVariable String entidadeEstudantil){
-		return blocoRepository.findByEntidadeEstudantil(EntidadeEstudantil.fromString(entidadeEstudantil));
+	public List<BlocoOutput> listar(@PathVariable String entidadeEstudantil){
+		return serviceBloco.listByEntidadeEstudantil(entidadeEstudantil);
 	}
 	
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public List<Armario> criar(@Valid @RequestBody BlocoInput bloco){
+	public List<ArmarioOutput> criar(@Valid @RequestBody BlocoInput bloco){
 		return serviceBloco.adicionar(bloco);
 	}
 	
