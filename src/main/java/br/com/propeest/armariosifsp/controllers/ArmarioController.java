@@ -11,17 +11,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.propeest.armariosifsp.InputModels.ArmarioInput;
 import br.com.propeest.armariosifsp.InputModels.ArmarioOutput;
 import br.com.propeest.armariosifsp.InputModels.ContratoInput;
 import br.com.propeest.armariosifsp.assembler.ArmarioAssembler;
-import br.com.propeest.armariosifsp.models.Armario;
 import br.com.propeest.armariosifsp.models.Bloco;
 import br.com.propeest.armariosifsp.models.Contrato;
 import br.com.propeest.armariosifsp.service.ServiceArmario;
 import br.com.propeest.armariosifsp.service.ServiceBloco;
 
 @RestController
-@RequestMapping("/blocos/{idbloco}/armarios")
+@RequestMapping("/blocos/{entidadeEstudantil}/{nomeBloco}/armarios")
 public class ArmarioController {
 
 	private ServiceArmario serviceArmario;
@@ -36,15 +36,17 @@ public class ArmarioController {
 	}
 
 	@GetMapping
-	public List<ArmarioOutput> listar(@PathVariable Long idbloco){
-		Bloco bloco = serviceBloco.buscar(idbloco);
+	public List<ArmarioOutput> listar(@PathVariable String entidadeEstudantil, @PathVariable String nomeBloco){
+		Bloco bloco = serviceBloco.buscar(entidadeEstudantil, nomeBloco);
 		
 		return armarioAssembler.toCollectionModel(bloco.getArmarios());
 	}
 	
 	@PutMapping
-	public List<Armario> alterar(@RequestBody List<Armario> armarios){
-		return serviceArmario.atualizar(armarios);
+	public List<ArmarioOutput> alterar(@PathVariable String entidadeEstudantil, @PathVariable String nomeBloco, @RequestBody List<ArmarioInput> armarios){
+		serviceBloco.checkEntidadeAndBloco(entidadeEstudantil, nomeBloco);
+		serviceArmario.atualizar(armarios);
+		return this.listar(entidadeEstudantil, nomeBloco);
 	}
 	
 	@PutMapping("/{idarmario}/aluguel")

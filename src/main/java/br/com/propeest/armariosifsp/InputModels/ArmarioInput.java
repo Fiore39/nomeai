@@ -2,18 +2,12 @@ package br.com.propeest.armariosifsp.InputModels;
 
 import br.com.propeest.armariosifsp.models.StatusArmario;
 
-public class ArmarioOutput implements Comparable<ArmarioOutput>{
+public class ArmarioInput {
 
-	private Long id;
 	private String nome;
 	private StatusArmario status;
 	
-	public Long getId() {
-		return id;
-	}
-	public void setId(Long id) {
-		this.id = id;
-	}
+	
 	public String getNome() {
 		return nome;
 	}
@@ -25,11 +19,6 @@ public class ArmarioOutput implements Comparable<ArmarioOutput>{
 	}
 	public void setStatus(StatusArmario status) {
 		this.status = status;
-	}
-	
-	@Override
-	public int compareTo(ArmarioOutput e) {
-		return this.getId().compareTo(e.getId());
 	}
 	
 }

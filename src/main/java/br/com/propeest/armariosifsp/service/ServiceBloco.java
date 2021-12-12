@@ -13,6 +13,7 @@ import br.com.propeest.armariosifsp.InputModels.BlocoOutput;
 import br.com.propeest.armariosifsp.assembler.ArmarioAssembler;
 import br.com.propeest.armariosifsp.assembler.BlocoAssembler;
 import br.com.propeest.armariosifsp.exceptions.NegocioException;
+import br.com.propeest.armariosifsp.models.Armario;
 import br.com.propeest.armariosifsp.models.Bloco;
 import br.com.propeest.armariosifsp.models.EntidadeEstudantil;
 import br.com.propeest.armariosifsp.models.Local;
@@ -48,7 +49,7 @@ public class ServiceBloco {
 
 	@Transactional
 	public List<ArmarioOutput> adicionar(BlocoInput blocoInput) {
-		List<ArmarioOutput> armarios = new ArrayList<ArmarioOutput>();
+		List<Armario> armarios = new ArrayList<Armario>();
 		Bloco bloco = blocoAssembler.toBloco(blocoInput);
 		Optional<Local> optionalLocal = localRepository.findById(blocoInput.getLocal().getId());
 		
@@ -63,9 +64,9 @@ public class ServiceBloco {
 		
 		bloco = blocoRepository.save(bloco);
 		for (int i = 0; i < 16; i++) {
-            armarios.add(armarioAssembler.toModel(serviceArmario.salvar(bloco, i + 1)));
+            armarios.add(serviceArmario.salvar(bloco, i + 1));
         }
-		return armarios;
+		return armarioAssembler.toCollectionModel(armarios);
 	}
 	
 	@Transactional
@@ -73,9 +74,23 @@ public class ServiceBloco {
 		blocoRepository.deleteById(idbloco);
 	}
 	
-	public Bloco buscar(Long idbloco) {
-		return blocoRepository.findById(idbloco)
-				.orElseThrow(() -> new NegocioException("Bloco não encontrado!"));
+	public Bloco buscar(String entidadeEstudantil, String nomeBloco) {
+		return blocoRepository.findByNomeAndEntidadeEstudantil(EntidadeEstudantil.fromString(entidadeEstudantil), nomeBloco)
+				.orElseThrow(() -> new NegocioException(
+						"Não existe bloco de nome <" + nomeBloco +
+						"> para a Entidade Estudantil <" + EntidadeEstudantil.fromString(entidadeEstudantil).getValor() + ">"
+				));
+	}
+	
+	public void checkEntidadeAndBloco(String entidadeEstudantil, String nomeBloco) {
+		Optional<Bloco> bloco = blocoRepository.findByNomeAndEntidadeEstudantil(EntidadeEstudantil.fromString(entidadeEstudantil), nomeBloco);
+		
+		if (bloco.isEmpty()) {
+			throw new NegocioException(
+					"Não existe bloco de nome <" + nomeBloco +
+					"> para a Entidade Estudantil <" + EntidadeEstudantil.fromString(entidadeEstudantil).getValor() + ">"
+			);
+		}
 	}
 	
 	public void checkBlocoExists(Bloco bloco) {
