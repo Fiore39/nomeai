@@ -33,7 +33,7 @@ public class Bloco {
     private List<Armario> armarios = new ArrayList<>();
     
     @ManyToOne
-    @JoinColumn(name = "local_id", nullable = true)
+    @JoinColumn(name = "local_id", nullable = false)
     private Local local;
 
     public Bloco() {

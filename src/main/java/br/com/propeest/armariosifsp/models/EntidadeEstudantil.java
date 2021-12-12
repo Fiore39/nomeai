@@ -4,7 +4,7 @@ import br.com.propeest.armariosifsp.exceptions.NegocioException;
 
 public enum EntidadeEstudantil {
 	
-	GREMIO_ESTUDANTIL("Grêmio Estudantil"), DIRETORIO_ACADEMICO("Diretório Acadêmico");
+	GREMIO("Grêmio Estudantil"), DA("Diretório Acadêmico");
 	
 	private final String valor;
 	

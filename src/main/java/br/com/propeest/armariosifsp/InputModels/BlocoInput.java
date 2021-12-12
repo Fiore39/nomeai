@@ -13,6 +13,8 @@ public class BlocoInput {
 	@NotNull
 	private String entidadeEstudantil;
 	
+	@Valid
+	@NotNull
 	private LocalIdInput local;
 	
 	public String getNome() {
