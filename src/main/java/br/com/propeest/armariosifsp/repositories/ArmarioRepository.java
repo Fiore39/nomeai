@@ -14,4 +14,5 @@ public interface ArmarioRepository extends JpaRepository<Armario, Long>{
 
 	List<Armario> findByBloco(Bloco bloco);
 	Optional<Armario> findByNome(String nome);
+	Optional<Armario> findByIdAndNome(Long id, String nome);
 }

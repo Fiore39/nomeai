@@ -8,6 +8,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
 import br.com.propeest.armariosifsp.InputModels.ArmarioInput;
+import br.com.propeest.armariosifsp.InputModels.ArmarioNomeInput;
 import br.com.propeest.armariosifsp.InputModels.ArmarioOutput;
 import br.com.propeest.armariosifsp.models.Armario;
 
@@ -22,6 +23,10 @@ public class ArmarioAssembler {
 	}
 	
 	public Armario toEntity(ArmarioInput armario) {
+		return modelMapper.map(armario, Armario.class);
+	}
+	
+	public Armario fromArmarioNomeInput(ArmarioNomeInput armario) {
 		return modelMapper.map(armario, Armario.class);
 	}
 	
