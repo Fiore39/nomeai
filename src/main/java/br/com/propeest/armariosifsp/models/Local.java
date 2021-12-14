@@ -23,9 +23,12 @@ public class Local {
     
     @OneToMany(mappedBy = "local", cascade=CascadeType.ALL)
     private List<Bloco> blocos = new ArrayList<>();
-
     
-    public Local(String nome) {
+    
+    public Local() {
+		
+	}
+	public Local(String nome) {
         this.nome = nome;
     }
     public void adicionarBloco(Bloco bloco) {
