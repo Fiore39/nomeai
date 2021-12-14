@@ -1,5 +1,6 @@
 package br.com.propeest.armariosifsp.service;
 
+import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -75,29 +76,86 @@ public class ServiceBloco {
 	}
 	
 	public Bloco buscar(String entidadeEstudantil, String nomeBloco) {
-		return blocoRepository.findByNomeAndEntidadeEstudantil(EntidadeEstudantil.fromString(entidadeEstudantil), nomeBloco)
-				.orElseThrow(() -> new NegocioException(
+		Optional<Bloco> bloco = findEntidadeEstudantilAndNome(entidadeEstudantil, nomeBloco);
+		
+		if (bloco.isEmpty()) {
+			String nome = getNomeListBlocos(blocoRepository.findByEntidadeEstudantil(EntidadeEstudantil.fromString(entidadeEstudantil)), nomeBloco);
+			
+			if (nome != "") {
+				nomeBloco = nome;
+			}
+			
+			bloco = findEntidadeEstudantilAndNome(entidadeEstudantil, nomeBloco);
+			if (bloco.isEmpty()) {
+				throw new NegocioException(
 						"Não existe bloco de nome <" + nomeBloco +
 						"> para a Entidade Estudantil <" + EntidadeEstudantil.fromString(entidadeEstudantil).getValor() + ">"
-				));
+				);
+			} else {
+				return bloco.get();
+			}
+		}
+		
+		return bloco.get();
 	}
 	
 	public void checkEntidadeAndBloco(String entidadeEstudantil, String nomeBloco) {
-		Optional<Bloco> bloco = blocoRepository.findByNomeAndEntidadeEstudantil(EntidadeEstudantil.fromString(entidadeEstudantil), nomeBloco);
+		Optional<Bloco> bloco = findEntidadeEstudantilAndNome(entidadeEstudantil, nomeBloco);
 		
 		if (bloco.isEmpty()) {
-			throw new NegocioException(
-					"Não existe bloco de nome <" + nomeBloco +
-					"> para a Entidade Estudantil <" + EntidadeEstudantil.fromString(entidadeEstudantil).getValor() + ">"
-			);
+			
+			if(!checkNomeListBlocos(
+					blocoRepository.findByEntidadeEstudantil(EntidadeEstudantil.fromString(entidadeEstudantil)),
+					nomeBloco))
+			{
+				throw new NegocioException(
+						"Não existe bloco de nome <" + nomeBloco +
+						"> para a Entidade Estudantil <" + EntidadeEstudantil.fromString(entidadeEstudantil).getValor() + ">"
+						);
+			}
 		}
 	}
 	
+	public Optional<Bloco> findEntidadeEstudantilAndNome(String entidadeEstudantil, String nomeBloco) {
+		Optional<Bloco> bloco = blocoRepository.findByNomeAndEntidadeEstudantil(EntidadeEstudantil.fromString(entidadeEstudantil), nomeBloco);
+		return bloco;
+	}
+	
 	public void checkBlocoExists(Bloco bloco) {
-		Optional<Bloco> optional = blocoRepository.findByNomeIgnoreCase(bloco.getNome());
-		if(optional.isPresent()) {
+		if(checkNomeListBlocos(blocoRepository.findAll(), bloco.getNome())) {
 			throw new NegocioException("Já existe outro bloco com mesmo nome!");
 		}
+	}
+	
+	public String getNomeListBlocos(List<Bloco> blocos, String str) {
+		for(Bloco blocoCheck : blocos) {
+			if(matchWords(str, blocoCheck.getNome())) {
+				return blocoCheck.getNome();
+			}
+		}
+		return "";
+	}
+	
+	public Boolean checkNomeListBlocos(List<Bloco> blocos, String str) {
+		for(Bloco blocoCheck : blocos) {
+			if(matchWords(str, blocoCheck.getNome())) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public Boolean matchWords(String a, String b) {
+		a = removerAcentos(a.toUpperCase());
+		b = removerAcentos(b.toUpperCase());
+		if(a.matches(b)) {
+			return true;
+		} else
+			return false;
+	}
+	
+	public static String removerAcentos(String str) {
+	    return Normalizer.normalize(str, Normalizer.Form.NFD).replaceAll("[^\\p{ASCII}]", "");
 	}
 
 }

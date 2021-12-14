@@ -2,6 +2,8 @@ package br.com.propeest.armariosifsp.controllers;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -11,9 +13,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.propeest.armariosifsp.InputModels.AluguelInput;
 import br.com.propeest.armariosifsp.InputModels.ArmarioInput;
 import br.com.propeest.armariosifsp.InputModels.ArmarioOutput;
-import br.com.propeest.armariosifsp.InputModels.ContratoInput;
 import br.com.propeest.armariosifsp.assembler.ArmarioAssembler;
 import br.com.propeest.armariosifsp.models.Bloco;
 import br.com.propeest.armariosifsp.models.Contrato;
@@ -49,9 +51,10 @@ public class ArmarioController {
 		return this.listar(entidadeEstudantil, nomeBloco);
 	}
 	
-	@PutMapping("/{idarmario}/aluguel")
+	@PutMapping("/aluguel")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public Contrato reservar(@PathVariable Long idarmario, @RequestBody ContratoInput contratoInput){
-		return serviceArmario.reservar(idarmario, contratoInput);
+	public Contrato reservar(@PathVariable String entidadeEstudantil, @PathVariable String nomeBloco, @Valid @RequestBody AluguelInput aluguelInput){
+		serviceBloco.checkEntidadeAndBloco(entidadeEstudantil, nomeBloco);
+		return serviceArmario.reservar(aluguelInput);
 	}
 }
