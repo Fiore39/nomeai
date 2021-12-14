@@ -25,14 +25,6 @@ public class Aluno {
 
     }
 
-    public void alugarArmario(Contrato contrato) {
-        contratos.add(contrato);
-    }
-
-    public void encerrarContrato(Contrato contrato) {
-        contratos.remove(contrato);
-    }
-
     public Long getId() {
         return id;
     }

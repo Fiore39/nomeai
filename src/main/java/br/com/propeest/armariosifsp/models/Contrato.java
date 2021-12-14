@@ -1,6 +1,5 @@
 package br.com.propeest.armariosifsp.models;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -8,7 +7,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 
 import java.time.OffsetDateTime;
 
@@ -27,16 +25,17 @@ public class Contrato {
     @JoinColumn(name = "aluno_id", nullable = true)
     private Aluno aluno;
     
-    @OneToOne(targetEntity=Aluno.class, cascade=CascadeType.ALL)
+    @ManyToOne
+    @JoinColumn(name = "admin_id", nullable = true)
     private Aluno admin;
-    
-	private OffsetDateTime dataAluguel;
-    private OffsetDateTime dataVencimento;
-    private Boolean ativo;
     
     @Embedded
     private AlunoContrato alunoContrato;
 
+    private OffsetDateTime dataAluguel;
+    private OffsetDateTime dataVencimento;
+    private Boolean ativo;
+    
     public Contrato() {
 		super();
 	}
