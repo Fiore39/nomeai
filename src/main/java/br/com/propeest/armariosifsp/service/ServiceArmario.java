@@ -1,12 +1,13 @@
 package br.com.propeest.armariosifsp.service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import br.com.propeest.armariosifsp.InputModels.ArmarioInput;
 import br.com.propeest.armariosifsp.InputModels.ContratoInput;
+import br.com.propeest.armariosifsp.assembler.ArmarioAssembler;
 import br.com.propeest.armariosifsp.exceptions.NegocioException;
 import br.com.propeest.armariosifsp.models.Armario;
 import br.com.propeest.armariosifsp.models.Bloco;
@@ -19,11 +20,13 @@ public class ServiceArmario {
 
 	private ArmarioRepository armarioRepository;
 	private ServiceContrato serviceContrato;
+	private ArmarioAssembler armarioAssembler;
 	
-	public ServiceArmario(ArmarioRepository armarioRepository, ServiceContrato serviceContrato) {
+	public ServiceArmario(ArmarioRepository armarioRepository, ServiceContrato serviceContrato, ArmarioAssembler armarioAssembler) {
 		super();
 		this.armarioRepository = armarioRepository;
 		this.serviceContrato = serviceContrato;
+		this.armarioAssembler = armarioAssembler;
 	}
 
 	@Transactional
@@ -38,25 +41,27 @@ public class ServiceArmario {
 				.orElseThrow(() -> new NegocioException("Armário não encontrado!"));
 	}
 	
+	public Armario buscarPorNome(String nome) {
+		return armarioRepository.findByNome(nome)
+				.orElseThrow(() -> new NegocioException("Armário não encontrado!"));
+	}
+	
 	public List<Armario> getAllArmariosByBloco(Bloco bloco){
-		//List<Armario> armarios = new ArrayList<>();
 		return armarioRepository.findByBloco(bloco);
 	}
 	
 	@Transactional
-	public List<Armario> atualizar(List<Armario> armarios){
-		List<Armario> armariosAtualizados = new ArrayList<>();
-		for(Armario armario: armarios) {
-			Armario salvarArmario = this.buscar(armario.getId());
+	public void atualizar(List<ArmarioInput> armarios){
+		for(Armario armario: armarioAssembler.toCollectionEntity(armarios)) {
+			Armario salvarArmario = this.buscarPorNome(armario.getNome());
+			
 			if((armario.getStatus().toString() != "") && (armario.getStatus() != null)) {
-				salvarArmario.setStatus(armario.getStatus());
+				if(!salvarArmario.getStatus().equals(armario.getStatus())) {
+					salvarArmario.setStatus(armario.getStatus());
+					armarioRepository.save(salvarArmario);
+				}
 			}
-			if((armario.getNome() != "") && (armario.getNome() != null)) {
-				salvarArmario.setNome(armario.getNome());
-			}
-			armariosAtualizados.add(armarioRepository.save(salvarArmario));
 		}
-		return armariosAtualizados;
 	}
 	
 	@Transactional
