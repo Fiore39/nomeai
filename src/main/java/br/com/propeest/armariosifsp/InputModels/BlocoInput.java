@@ -1,16 +1,19 @@
 package br.com.propeest.armariosifsp.InputModels;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 public class BlocoInput {
 
 	@Valid
 	@NotNull
+	@NotBlank
 	private String nome;
 	
 	@Valid
 	@NotNull
+	@NotBlank
 	private String entidadeEstudantil;
 	
 	@Valid
