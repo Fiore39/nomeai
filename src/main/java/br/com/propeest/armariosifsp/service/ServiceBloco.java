@@ -2,6 +2,7 @@ package br.com.propeest.armariosifsp.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,18 +12,22 @@ import br.com.propeest.armariosifsp.assembler.BlocoAssembler;
 import br.com.propeest.armariosifsp.exceptions.NegocioException;
 import br.com.propeest.armariosifsp.models.Armario;
 import br.com.propeest.armariosifsp.models.Bloco;
+import br.com.propeest.armariosifsp.models.Local;
 import br.com.propeest.armariosifsp.repositories.BlocoRepository;
+import br.com.propeest.armariosifsp.repositories.LocalRepository;
 
 @Service
 public class ServiceBloco {
 	
 	private BlocoRepository blocoRepository;
+	private LocalRepository localRepository;
 	private ServiceArmario serviceArmario;
 	private BlocoAssembler blocoAssembler;
 	
-	public ServiceBloco(BlocoRepository blocoRepository, ServiceArmario serviceArmario, BlocoAssembler blocoAssembler) {
+	public ServiceBloco(BlocoRepository blocoRepository, LocalRepository localRepository, ServiceArmario serviceArmario, BlocoAssembler blocoAssembler) {
 		super();
 		this.blocoRepository = blocoRepository;
+		this.localRepository = localRepository;
 		this.serviceArmario = serviceArmario;
 		this.blocoAssembler = blocoAssembler;
 	}
@@ -30,7 +35,16 @@ public class ServiceBloco {
 	@Transactional
 	public List<Armario> adicionar(BlocoInput blocoInput) {
 		List<Armario> armarios = new ArrayList<Armario>();
-		Bloco bloco = blocoAssembler.toEntity(blocoInput);
+		Bloco bloco = blocoAssembler.toBloco(blocoInput);
+		Optional<Local> optionalLocal = localRepository.findById(blocoInput.getLocal().getId());
+		
+		if(optionalLocal.isPresent()) {
+			Local local = optionalLocal.get();
+			bloco.setLocal(local);
+		} else {
+			throw new NegocioException("Local não encontrado!");
+		}
+			
 		bloco = blocoRepository.save(bloco);
 		for (int i = 0; i < 16; i++) {
             armarios.add(serviceArmario.salvar(bloco, i + 1));

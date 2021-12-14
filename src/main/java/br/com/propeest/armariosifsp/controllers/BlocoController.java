@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.propeest.armariosifsp.InputModels.BlocoInput;
 import br.com.propeest.armariosifsp.models.Armario;
 import br.com.propeest.armariosifsp.models.Bloco;
+import br.com.propeest.armariosifsp.models.EntidadeEstudantil;
 import br.com.propeest.armariosifsp.repositories.BlocoRepository;
 import br.com.propeest.armariosifsp.service.ServiceBloco;
 
@@ -36,7 +37,7 @@ public class BlocoController {
 
 	@GetMapping("/{entidadeEstudantil}")
 	public List<Bloco> listar(@PathVariable String entidadeEstudantil){
-		return blocoRepository.findByEntidadeEstudantil(entidadeEstudantil);
+		return blocoRepository.findByEntidadeEstudantil(EntidadeEstudantil.fromString(entidadeEstudantil));
 	}
 	
 	@PostMapping
