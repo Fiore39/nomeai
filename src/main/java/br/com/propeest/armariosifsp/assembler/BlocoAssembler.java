@@ -21,6 +21,10 @@ public class BlocoAssembler {
 		this.modelMapper = modelMapper;
 	}
 	
+	/*
+	 * Com .map, dá pra fazer a conversão de uma classe pra outra sem precisar instanciar um objeto e ficar dando .set em cada propriedade
+	 * */
+	
 	public Bloco toEntity(BlocoInput blocoInput) {
 		return modelMapper.map(blocoInput, Bloco.class);
 	}
