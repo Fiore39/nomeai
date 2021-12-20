@@ -1,15 +1,20 @@
 package br.com.propeest.armariosifsp.service;
 
 import java.time.OffsetDateTime;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
 import br.com.propeest.armariosifsp.InputModels.AluguelInput;
+import br.com.propeest.armariosifsp.InputModels.ConfirmaPagamentoInput;
+import br.com.propeest.armariosifsp.InputModels.ContratoOutput;
 import br.com.propeest.armariosifsp.assembler.ContratoAssembler;
 import br.com.propeest.armariosifsp.exceptions.NegocioException;
+import br.com.propeest.armariosifsp.models.Aluno;
 import br.com.propeest.armariosifsp.models.Armario;
 import br.com.propeest.armariosifsp.models.Contrato;
+import br.com.propeest.armariosifsp.models.StatusArmario;
 import br.com.propeest.armariosifsp.repositories.ContratoRepository;
 
 @Service
@@ -17,44 +22,81 @@ public class ServiceContrato {
 
 	private ContratoRepository contratoRepository;
 	private ContratoAssembler contratoAssembler;
+	private ServiceArmario serviceArmario;
+	private ServiceAluno serviceAluno;
 
-	public ServiceContrato(ContratoRepository contratoRepository, ContratoAssembler contratoAssembler) {
+	public ServiceContrato(ContratoRepository contratoRepository, ContratoAssembler contratoAssembler, ServiceArmario serviceArmario, ServiceAluno serviceAluno) {
 		super();
 		this.contratoRepository = contratoRepository;
 		this.contratoAssembler = contratoAssembler;
+		this.serviceArmario = serviceArmario;
+		this.serviceAluno = serviceAluno;
 	}
 	
-	public Contrato gerar(Armario armario, AluguelInput aluguelInput) {
-		Contrato contrato = contratoAssembler.toEntity(aluguelInput);
+	public ContratoOutput reservar(AluguelInput aluguelInput) {
+		Armario armario = serviceArmario.buscar(aluguelInput.getArmario().getId(), aluguelInput.getArmario().getNome());
+		Aluno aluno = serviceAluno.buscarEmail(aluguelInput.getAluno().getEmail());
 		
-		contrato.setArmario(armario);
-		contrato.setDataAluguel(OffsetDateTime.now());
-		contrato.setDataVencimento(OffsetDateTime.now().plusDays(3));
-		contrato.setAtivo(true);
-		return contratoRepository.save(contrato);
-	}
-	
-	public void alugar(byte meses, Armario armario) {
-		Optional<Contrato> optionalContrato = contratoRepository.findByArmario(armario);
-		
-		if (optionalContrato.isEmpty()) {
-			throw new NegocioException("Não há contrato para armário com id <" + armario.getId() + "> e nome <" + armario.getNome() + ">");
+		if (armario.getStatus() != StatusArmario.LIVRE) {
+			throw new NegocioException("Armário não está Livre!");
 		}
 		
-		Contrato contrato = optionalContrato.get();
+		armario.setStatus(StatusArmario.RESERVADO);
+		Armario armarioSalvo = serviceArmario.save(armario);
+		
+		Contrato contrato = contratoAssembler.toEntity(aluguelInput);
+		contrato.setArmario(armarioSalvo);
 		contrato.setDataAluguel(OffsetDateTime.now());
-		contrato.setDataVencimento(OffsetDateTime.now().plusMonths(meses));
-		contratoRepository.save(contrato);
+		contrato.setDataVencimento(OffsetDateTime.now().plusDays(3));
+		contrato.setAtivo(false);
+		contrato.setAluno(aluno);
+		
+		return contratoAssembler.toModel(contratoRepository.save(contrato));
 	}
 	
-	/*
-	public void alugarArmario(Contrato contrato) {
-        contratos.add(contrato);
-    }
-
-    public void encerrarContrato(Contrato contrato) {
-        contratos.remove(contrato);
-    }
-	*/
+	public ContratoOutput alugar(int meses, ConfirmaPagamentoInput pagamentoInput) {
+		
+		if (meses > 12) {
+			throw new NegocioException("Período de Aluguel maior que 12 meses");
+		}
+		
+		Optional<Contrato> optionalContrato = contratoRepository.findById(pagamentoInput.getId());
+		
+		if (optionalContrato.isEmpty()) {
+			throw new NegocioException("Não há nenhum contrato com as informações dadas!");
+		}
+		
+		Aluno admin = serviceAluno.buscarEmail(pagamentoInput.getAdmin().getEmail());
+		
+		Contrato contrato = optionalContrato.get();
+		
+		if (contrato.getArmario().getStatus() != StatusArmario.RESERVADO) {
+			throw new NegocioException("Não foi possível alugar pois o armário não está reservado");
+		}
+		if (contrato.getAdmin() != null) {
+			throw new NegocioException("O contrato já foi ativado e o pagamento efetivado!");
+		}
+		
+		contrato.setDataAluguel(OffsetDateTime.now());
+		contrato.setDataVencimento(OffsetDateTime.now().plusMonths(meses));
+		contrato.setAtivo(true);
+		contrato.setAdmin(admin);
+		
+		serviceArmario.alugar(contrato.getArmario().getId(), contrato.getArmario().getNome());
+		
+		return contratoAssembler.toModel(contratoRepository.save(contrato));
+	}
+	
+	public List<ContratoOutput> listReservados(){
+		List<Contrato> contratos = contratoRepository.findByStatusArmario(StatusArmario.RESERVADO);
+		
+		return contratoAssembler.toCollectionModel(contratos);
+	}
+	
+	public List<ContratoOutput> listReservados(String nome){
+		List<Contrato> contratos = contratoRepository.findByStatusArmarioAndNome(StatusArmario.RESERVADO, nome);
+		
+		return contratoAssembler.toCollectionModel(contratos);
+	}
 	
 }

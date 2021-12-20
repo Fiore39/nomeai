@@ -1,14 +1,17 @@
 package br.com.propeest.armariosifsp.InputModels;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
+public class AlunoContratoOutput {
 
-public class AlunoAluguelInput {
-
-	@NotBlank
-	@Email
+	private String nome;
 	private String email;
 	
+	
+	public String getNome() {
+		return nome;
+	}
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
 	public String getEmail() {
 		return email;
 	}

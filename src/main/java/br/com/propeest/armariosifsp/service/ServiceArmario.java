@@ -6,14 +6,11 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import br.com.propeest.armariosifsp.InputModels.AluguelInput;
 import br.com.propeest.armariosifsp.InputModels.ArmarioInput;
-import br.com.propeest.armariosifsp.InputModels.ArmarioNomeInput;
 import br.com.propeest.armariosifsp.assembler.ArmarioAssembler;
 import br.com.propeest.armariosifsp.exceptions.NegocioException;
 import br.com.propeest.armariosifsp.models.Armario;
 import br.com.propeest.armariosifsp.models.Bloco;
-import br.com.propeest.armariosifsp.models.Contrato;
 import br.com.propeest.armariosifsp.models.StatusArmario;
 import br.com.propeest.armariosifsp.repositories.ArmarioRepository;
 
@@ -21,13 +18,11 @@ import br.com.propeest.armariosifsp.repositories.ArmarioRepository;
 public class ServiceArmario {
 
 	private ArmarioRepository armarioRepository;
-	private ServiceContrato serviceContrato;
 	private ArmarioAssembler armarioAssembler;
 	
-	public ServiceArmario(ArmarioRepository armarioRepository, ServiceContrato serviceContrato, ArmarioAssembler armarioAssembler) {
+	public ServiceArmario(ArmarioRepository armarioRepository, ArmarioAssembler armarioAssembler) {
 		super();
 		this.armarioRepository = armarioRepository;
-		this.serviceContrato = serviceContrato;
 		this.armarioAssembler = armarioAssembler;
 	}
 
@@ -72,35 +67,14 @@ public class ServiceArmario {
 	}
 	
 	@Transactional
-	public Contrato reservar(AluguelInput aluguelInput) {
-		Armario armario = this.buscar(aluguelInput.getArmario().getId(), aluguelInput.getArmario().getNome());
-		armario.setStatus(StatusArmario.RESERVADO);
-		armario = armarioRepository.save(armario);
-		return serviceContrato.gerar(armario, aluguelInput);
+	public Armario alugar(Long id, String nome) {
+		Armario armario = this.buscar(id, nome);
+		armario.setStatus(StatusArmario.ALUGADO);
+		return armarioRepository.save(armario);
 	}
 	
-	@Transactional
-	public void alugar(byte meses, ArmarioNomeInput armarioInput) {
-		
-		if (meses > 12) {
-			throw new NegocioException("Período de Aluguel maior que 12 meses");
-		}
-		
-		Armario armario = this.buscar(armarioInput.getId(), armarioInput.getNome());
-		armario.setStatus(StatusArmario.ALUGADO);
-		armario = armarioRepository.save(armario);
-		/*return*/ serviceContrato.alugar(meses, armario);
+	public Armario save(Armario armario) {
+		return armarioRepository.save(armario);
 	}
-	/*
-    public void alugar(Contrato contrato) {
-        this.contrato = contrato;
-        this.status = StatusArmario.ALUGADO;
-    }
 
-    public void liberar() {
-        if (this.status.equals(StatusArmario.ALUGADO) || this.status.equals(StatusArmario.RESERVADO)) {
-            this.contrato = null;
-        }
-        this.status = StatusArmario.LIVRE;
-    }*/
 }

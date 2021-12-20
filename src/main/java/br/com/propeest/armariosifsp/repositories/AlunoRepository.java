@@ -1,6 +1,7 @@
 package br.com.propeest.armariosifsp.repositories;
 
 import br.com.propeest.armariosifsp.models.Aluno;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -13,4 +14,5 @@ public interface AlunoRepository extends JpaRepository<Aluno, Long> {
 
     @Query("select j from Aluno j where j.email = :email and j.senha = :senha") //Linha não necessária
     public Aluno buscarLogin(String email, String senha);
+    
 }
