@@ -22,7 +22,7 @@ public class Contrato {
     private Armario armario;
     
     @ManyToOne
-    @JoinColumn(name = "aluno_id", nullable = true)
+    @JoinColumn(name = "aluno_id", nullable = false)
     private Aluno aluno;
     
     @ManyToOne

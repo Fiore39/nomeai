@@ -1,30 +1,44 @@
 package br.com.propeest.armariosifsp.controllers;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.propeest.armariosifsp.InputModels.ArmarioNomeInput;
-import br.com.propeest.armariosifsp.service.ServiceArmario;
+import br.com.propeest.armariosifsp.InputModels.ConfirmaPagamentoInput;
+import br.com.propeest.armariosifsp.InputModels.ContratoOutput;
+import br.com.propeest.armariosifsp.service.ServiceContrato;
 
 @RestController
-@RequestMapping("/confirmapagamento/{mesesAluguel}")
+@RequestMapping
 public class AluguelController {
 	
-	private ServiceArmario serviceArmario;
+	private ServiceContrato serviceContrato;
 
-	public AluguelController(ServiceArmario serviceArmario) {
+	public AluguelController(ServiceContrato serviceContrato) {
 		super();
-		this.serviceArmario = serviceArmario;
+		this.serviceContrato = serviceContrato;
 	}
 	
-	@PutMapping
-	public void confirmaPagamento(@PathVariable byte meses, @RequestBody @Valid ArmarioNomeInput armario) {
-		serviceArmario.alugar(meses, armario);
+	@GetMapping("/contratos/reservados/all")
+	public List<ContratoOutput> listReservados(){
+		return serviceContrato.listReservados();
+	}
+	
+	@GetMapping("/contratos/reservados/{nome}")
+	public List<ContratoOutput> listReservados(@PathVariable String nome){
+		return serviceContrato.listReservados(nome);
+	}
+	
+	@PutMapping("/confirmapagamento/{mesesAluguel}")
+	public ContratoOutput confirmaPagamento(@PathVariable int mesesAluguel, @RequestBody @Valid ConfirmaPagamentoInput pagamentoInput) {
+		return serviceContrato.alugar(mesesAluguel, pagamentoInput);
 	}
 
 }
